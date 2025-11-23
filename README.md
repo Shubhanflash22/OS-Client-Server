@@ -1,71 +1,84 @@
-# CS F372 Operating Systems - Assignment 2
+# Client-Server System in C 💻🔗
 
-This is a client-server application for message passing and logging, which comprises of 1 server and "n" clients. The applications are meant to be running in a single system and exchange data using stateless communication (i.e., single message block should be passed and completed in a single communication loop). Every request from the clients to the server is replied to the client by the server. Every action is initiated by the client and acted upon by the server.
+A POSIX-compliant client-server application developed in C for efficient message passing, logging, and concurrent client operations.
 
-The system follows a request-response mechanism and provides for the following set of actions for the client and server:
+## Table of Contents
 
-- REGISTER: This is a client-initiated action where the client connects with the server in the server's connect channel, for the very first time with a unique name. The server will verify that the client's name is unique and unused, and return with a key (string). The server will allocate the comm channel, shared memory, and create the worker thread for the client. The key will be used as a common shared link for all further communication.
-- UNREGISTER: This is also a client-initiated action where it disconnects from its allocated comm channel.
+* [Project Overview](#project-overview)
+* [Features](#features)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Implementation](#implementation)
+* [Results](#results)
+* [Future Work](#future-work)
+* [License](#license)
 
-## Requirements
+## Project Overview
 
-- POSIX compliant C compiler
-- pthread library
+This project implements a multithreaded client-server system in C that allows multiple clients to communicate with a server using stateless communication. The server handles requests concurrently from multiple clients, providing functionalities like registration, request handling, response, and unregistration.
+
+Key components include:
+
+* POSIX-compliant C implementation.
+* Inter-process communication using shared memory.
+* Synchronization using pthread mutex for multithreaded server operations.
+* Logging and monitoring of client-server interactions.
+
+## Features
+
+* **Stateless Communication:** Clients can register, send requests, receive responses, and unregister.
+* **Concurrent Operations:** Multithreaded server with synchronized shared memory ensures multiple clients can operate simultaneously.
+* **Interactive Client Menu:** Clients can interact through a menu with options for sending requests and unregistering.
+* **Logging:** Maintains logs for all intermediate states and summarizes registered clients and requests serviced.
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/client-server-c.git
+cd client-server-c
+
+# Compile the server and client programs
+gcc -pthread server.c -o server
+gcc -pthread client.c -o client
+```
 
 ## Usage
 
-### Server
+1. Start the server:
 
-To run the server, compile `server.c` using any POSIX compliant C compiler:
-
-```
-gcc -o server server.c -lpthread
-```
-
-Then run `server`:
-
-```
+```bash
 ./server
 ```
 
-The server will start listening for incoming connections from clients.
+2. Start one or more clients:
 
-### Client
-
-To run a client, compile `client.c` using any POSIX compliant C compiler:
-
-```
-gcc -o client client.c
-```
-
-Then run `client`:
-
-```
+```bash
 ./client
 ```
 
-The client will prompt you to enter your name. After entering your name, you can send messages to other clients by entering their registration key and the message.
+3. Use the interactive menu in the client to register, send requests, or unregister.
+4. Check the server console/logs to monitor client interactions and request handling.
 
-## Implementation Details
+## Implementation
 
-The server uses a shared memory segment to store information about the connected clients. The shared memory segment contains a mutex lock to synchronize access to the shared data, as well as an array of client structures that store information about each connected client.
+* **Server:** Multithreaded using pthreads, synchronized with mutex in shared memory.
+* **Client:** Single-threaded, menu-driven interface for user interaction.
+* **Inter-process Communication:** Shared memory used to exchange messages between server and clients.
+* **Logging:** Tracks registration, requests, responses, and summary statistics.
 
-When a client connects to the server, it sends a registration request containing its name. The server verifies that the name is unique and unused, and returns a registration key to the client. The registration key is used as a common shared link for all further communication between the client and server.
+## Results
 
-The server spawns a new thread for each connected client, which handles requests from that client. The thread waits for the mutex lock to be available, then checks if the client has disconnected. If the client is still connected, it handles the request from the client and releases the mutex lock.
+* Successfully implemented a multithreaded server handling multiple clients concurrently.
+* Enabled stateless communication with detailed logging and monitoring.
+* Interactive client interface simplifies testing and demonstration of system functionalities.
 
-The client sends messages to other clients by specifying their registration key and the message. The server forwards the message to the specified client by looking up its registration key in the shared data.
+## Future Work
 
-The server also supports unregistering clients, which removes them from the shared data and disconnects them from their allocated comm channel.
-
-## Synchronization
-
-The server uses a mutex lock to synchronize access to the shared data. Each thread that handles requests from a connected client acquires this lock before accessing or modifying any shared data.
-
-## References
-
-This project was developed as part of CS F372 Operating Systems course at BITS Pilani, Hyderabad Campus.
+* Add support for authentication and secure communication.
+* Enhance server to handle large-scale client operations efficiently.
+* Implement persistent storage for logs and request history.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

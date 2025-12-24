@@ -35,12 +35,12 @@ Key components include:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/client-server-c.git
-cd client-server-c
+git clone https://github.com/yourusername/OS-Client-Server.git
+cd OS-Client-Server
 
 # Compile the server and client programs
-gcc -pthread server.c -o server
-gcc -pthread client.c -o client
+gcc -pthread Server.c -o Server
+gcc -pthread Client.c -o Client
 ```
 
 ## Usage
@@ -48,13 +48,13 @@ gcc -pthread client.c -o client
 1. Start the server:
 
 ```bash
-./server
+./Server
 ```
 
 2. Start one or more clients:
 
 ```bash
-./client
+./Client
 ```
 
 3. Use the interactive menu in the client to register, send requests, or unregister.
@@ -78,6 +78,19 @@ gcc -pthread client.c -o client
 * Add support for authentication and secure communication.
 * Enhance server to handle large-scale client operations efficiently.
 * Implement persistent storage for logs and request history.
+
+## Citation
+
+If you use this work, please cite:
+
+```bibtex
+@software{OS-Client-Server,
+  author = {Shubhan Mital},
+  title = {OS Client Server},
+  year = {2025},
+  url = https://github.com/Shubhanflash22/OS-Client-Server.git
+}
+```
 
 ## License
 
